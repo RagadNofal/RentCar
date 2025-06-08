@@ -7,14 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Car extends Model
 {
     protected $fillable = [
-        'brand',
-        'model',
-        'engine',
-        'price_per_day',
-        'image',
-        'quantity',
-        'reduce',
-        'stars',
+    'brand',
+    'model',
+    'engine',
+    'price_per_day',
+    'quantity',
+    'category',
+    'status',
+    'reduce',
+    'stars',
+    'image',
     ];
      public const STATUS_AVAILABLE = 'Available';
     public const STATUS_UNAVAILABLE = 'Unavailable';

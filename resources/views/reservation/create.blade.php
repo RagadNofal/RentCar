@@ -168,21 +168,30 @@
     @endif
 </div>
 
-{{-- JavaScript for dynamic price calculation --}}
+{{-- JavaScript for dynamic price calculation & disabling reserved dates --}}
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         const flatpickrElement = document.getElementById('laravel-flatpickr');
+        const reservedRanges = @json($reservedRanges);
 
         if (flatpickrElement && flatpickrElement._flatpickr) {
-            flatpickrElement._flatpickr.config.onChange.push(function(selectedDates) {
+            // Disable reserved ranges
+            flatpickrElement._flatpickr.set('disable', reservedRanges.map(range => ({
+                from: range.from,
+                to: range.to
+            })));
+
+            // Push onChange logic for price calculation
+            flatpickrElement._flatpickr.config.onChange.push(function (selectedDates) {
                 if (selectedDates.length === 2) {
                     const startDate = selectedDates[0];
                     const endDate = selectedDates[1];
 
                     if (startDate && endDate && startDate <= endDate) {
-                       const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                        const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
                         const pricePerDay = {{ $car->price_per_day }};
                         const totalPrice = duration * pricePerDay;
+
                         $('#duration span').text(duration + ' days');
                         $('#total-price span').text(totalPrice + ' $');
                     } else {
@@ -196,7 +205,8 @@
             });
         }
 
-        document.getElementById("mobile_submit_button").addEventListener("click", function() {
+        // Mobile submit button logic
+        document.getElementById("mobile_submit_button").addEventListener("click", function () {
             document.getElementById("reservation_form").submit();
         });
     });

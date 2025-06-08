@@ -25,7 +25,7 @@ return new class extends Migration
         $table->enum('pickup_location', ['Company Site','Queen Alia Airport','7th Circle','Mecca Street','University of Jordan','Downtown','Other'])->default('Company Site');
         $table->enum('dropoff_location', ['Company Site','Queen Alia Airport','7th Circle','Mecca Street','University of Jordan','Downtown','Other'])->default('Company Site');
        
-        $table->enum('status', ['Active', 'Pending', 'Canceled','Completed'])->default('Active');
+        $table->enum('status', ['Active', 'Pending', 'Cancelled','Completed'])->default('Active');
 
         $table->timestamps();
     });

@@ -18,11 +18,14 @@ class Reservation extends Model
         'dropoff_location',
         'status',
     ];
-
+protected $casts = [
+    'start_date' => 'date',
+    'end_date' => 'date',
+];
     // Enums: Status
     public const STATUS_ACTIVE = 'Active';
     public const STATUS_PENDING = 'Pending';
-    public const STATUS_CANCELED = 'Canceled';
+    public const STATUS_CANCELED = 'Cancelled';
     
     public const STATUS_COMPLETED = 'Completed';
 

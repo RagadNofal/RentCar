@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +23,7 @@ class CarSeeder extends Seeder
                 'status' => 'Available',
                 'reduce' => 30,
                 'stars' => 5,
+                'category' => 'Sedan',
             ],
             [
                 'brand' => 'Honda',
@@ -35,6 +35,7 @@ class CarSeeder extends Seeder
                 'status' => 'Available',
                 'reduce' => 10,
                 'stars' => 5,
+                'category' => 'Sedan',
             ],
             [
                 'brand' => 'Ford',
@@ -46,6 +47,7 @@ class CarSeeder extends Seeder
                 'status' => 'Available',
                 'reduce' => 0,
                 'stars' => 5,
+                'category' => 'Sports',
             ],
             [
                 'brand' => 'BMW',
@@ -55,9 +57,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/BMW_X5.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 20,
                 'stars' => 5,
+                'category' => 'SUV',
             ],
             [
                 'brand' => 'Mercedes-Benz',
@@ -67,9 +69,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Mercedes-Benz_E-Class.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 10,
                 'stars' => 5,
+                'category' => 'Luxury',
             ],
             [
                 'brand' => 'Chevrolet',
@@ -79,21 +81,21 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Chevrolet_Malibu.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 50,
                 'stars' => 5,
+                'category' => 'Sedan',
             ],
             [
                 'brand' => 'Audi',
                 'model' => 'A4',
                 'engine' => '2.0L',
-                'price_per_day' => 70, 5,
+                'price_per_day' => 70,
                 'image' => '/images/cars/Audi_A4.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 40,
                 'stars' => 5,
+                'category' => 'Luxury',
             ],
             [
                 'brand' => 'Nissan',
@@ -103,9 +105,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Nissan_Altima.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 60,
                 'stars' => 5,
+                'category' => 'Sedan',
             ],
             [
                 'brand' => 'Hyundai',
@@ -115,9 +117,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Hyundai_Sonata.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 30,
                 'stars' => 5,
+                'category' => 'Sedan',
             ],
             [
                 'brand' => 'Kia',
@@ -127,9 +129,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Kia_Optima.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 20,
                 'stars' => 5,
+                'category' => 'Sedan',
             ],
             [
                 'brand' => 'Volkswagen',
@@ -139,9 +141,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Volkswagen_Golf.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 40,
                 'stars' => 5,
+                'category' => 'Hatchback',
             ],
             [
                 'brand' => 'Subaru',
@@ -151,9 +153,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Subaru_Impreza.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 20,
                 'stars' => 5,
+                'category' => 'Sedan',
             ],
             [
                 'brand' => 'Ford',
@@ -163,9 +165,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Ford_Focus.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 30,
                 'stars' => 5,
+                'category' => 'Hatchback',
             ],
             [
                 'brand' => 'Tesla',
@@ -175,9 +177,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Tesla_Model_3.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 20,
                 'stars' => 5,
+                'category' => 'Electric',
             ],
             [
                 'brand' => 'Chevrolet',
@@ -187,21 +189,21 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Chevrolet_Camaro.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 20,
                 'stars' => 5,
+                'category' => 'Sports',
             ],
             [
                 'brand' => 'Jaguar',
-                'model' => ' F-Type',
+                'model' => 'F-Type',
                 'engine' => '3.0L V6',
                 'price_per_day' => 120,
                 'image' => '/images/cars/Jaguar_F-Type.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 35,
                 'stars' => 5,
+                'category' => 'Luxury',
             ],
             [
                 'brand' => 'Lexus',
@@ -211,9 +213,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Lexus_RX_350.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 40,
                 'stars' => 5,
+                'category' => 'SUV',
             ],
             [
                 'brand' => 'Volvo',
@@ -223,9 +225,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Volvo_XC60.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 20,
                 'stars' => 5,
+                'category' => 'SUV',
             ],
             [
                 'brand' => 'Porsche',
@@ -235,9 +237,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Porsche_911_Carrera.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 40,
                 'stars' => 5,
+                'category' => 'Sports',
             ],
             [
                 'brand' => 'Mitsubishi',
@@ -247,9 +249,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Mitsubishi_Outlander.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 30,
                 'stars' => 5,
+                'category' => 'SUV',
             ],
             [
                 'brand' => 'Land Rover',
@@ -259,9 +261,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Land_Rover_Range_Rover_Sport.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 20,
                 'stars' => 5,
+                'category' => 'Luxury',
             ],
             [
                 'brand' => 'GMC',
@@ -271,9 +273,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/GMC_Sierra_1500.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 35,
                 'stars' => 4,
+                'category' => 'Pickup',
             ],
             [
                 'brand' => 'Fiat',
@@ -283,9 +285,9 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Fiat_500.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 40,
                 'stars' => 5,
+                'category' => 'Hatchback',
             ],
             [
                 'brand' => 'Mini',
@@ -297,6 +299,7 @@ class CarSeeder extends Seeder
                 'status' => 'Available',
                 'reduce' => 30,
                 'stars' => 5,
+                'category' => 'Hatchback',
             ],
             [
                 'brand' => 'Audi',
@@ -306,83 +309,12 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Audi_Q5.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-
                 'reduce' => 40,
                 'stars' => 5,
-            ], [
-                'brand' => 'Chevrolet',
-                'model' => 'Tahoe',
-                'engine' => '5.3L V8',
-                'price_per_day' => 110.00,
-                'image' => '/images/cars/Chevrolet_Tahoe.jpg',
-                'quantity' => 1,
-                'status' => 'Available',
-
-                'reduce' => 20,
-                'stars' => 5,
-            ],
-            [
-                'brand' => 'Ford',
-                'model' => 'Explorer',
-                'engine' => '3.5L V6',
-                'price_per_day' => 95.00,
-                'image' => '/images/cars/Ford_Explorer.jpg',
-                'quantity' => 1,
-                'status' => 'Available',
-
-                'reduce' => 30,
-                'stars' => 5,
-            ],
-            [
-                'brand' => 'Jeep',
-                'model' => 'Wrangler',
-                'engine' => '3.6L V6',
-                'price_per_day' => 100.00,
-                'image' => '/images/cars/Jeep_Wrangler.jpg',
-                'quantity' => 1,
-                'status' => 'Available',
-
-                'reduce' => 20,
-                'stars' => 5,
-            ],
-            [
-                'brand' => 'Mazda',
-                'model' => 'CX-5',
-                'engine' => ' 2.5L',
-                'price_per_day' => 65.00,
-                'image' => '/images/cars/Mazda_CX-5.jpg',
-                'quantity' => 1,
-                'status' => 'Available',
-
-                'reduce' => 15,
-                'stars' => 5,
-            ],
-            [
-                'brand' => 'Hyundai',
-                'model' => 'Tucson',
-                'engine' => ' 2.0L',
-                'price_per_day' => 50.00,
-                'image' => '/images/cars/Hyundai_Tucson.jpg',
-                'quantity' => 1,
-                'status' => 'Available',
-
-                'reduce' => 40,
-                'stars' => 5,
+                'category' => 'SUV',
             ],
         ];
 
-        foreach ($cars as $car) {
-            DB::table('cars')->insert([
-                'brand' => $car['brand'],
-                'model' => $car['model'],
-                'engine' => $car['engine'],
-                'price_per_day' => $car['price_per_day'],
-                'image' => $car['image'],
-                'quantity' => $car['quantity'],
-                'status' => $car['status'],
-                'reduce' => $car['reduce'],
-                'stars' => $car['stars'],
-            ]);
-        }
+        DB::table('cars')->insert($cars);
     }
 }

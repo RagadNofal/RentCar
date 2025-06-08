@@ -33,17 +33,19 @@ class CarController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
-            'brand' => 'required',
-            'model' => 'required',
-            'engine' => 'required',
-            'quantity' => 'required',
-            'price_per_day' => 'required',
-            'status' => 'required',
-            'reduce' => 'required',
-            'stars' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg'
-        ]);
+       $request->validate([
+        'brand' => 'required',
+        'model' => 'required',
+        'engine' => 'required',
+        'quantity' => 'required',
+        'price_per_day' => 'required',
+        'status' => 'required',
+        'reduce' => 'required',
+        'stars' => 'required',
+        'category' => 'required', // <-- add this
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg'
+    ]);
+
 
         $car = new Car;
         $car->brand = $request->brand;
@@ -53,6 +55,7 @@ class CarController extends Controller
         $car->price_per_day = $request->price_per_day;
         $car->status = $request->status;
         $car->reduce = $request->reduce;
+        $car->category = $request->category;
         $car->stars = $request->stars;
 
         if ($request->hasFile('image')) {
@@ -88,16 +91,17 @@ class CarController extends Controller
      */
     public function update(Request $request, Car $car)
     {
-        $request->validate([
-            'brand' => 'required',
-            'model' => 'required',
-            'engine' => 'required',
-            'quantity' => 'required',
-            'price_per_day' => 'required',
-            'status' => 'required',
-            'reduce' => 'required',
-            'stars' => 'required',
-        ]);
+       $request->validate([
+        'brand' => 'required',
+        'model' => 'required',
+        'engine' => 'required',
+        'quantity' => 'required',
+        'price_per_day' => 'required',
+        'status' => 'required',
+        'reduce' => 'required',
+        'stars' => 'required',
+        'category' => 'required', 
+    ]);
 
         $car = Car::findOrFail($car->id);
 
@@ -108,6 +112,7 @@ class CarController extends Controller
         $car->price_per_day = $request->price_per_day;
         $car->status = $request->status;
         $car->reduce = $request->reduce;
+        $car->category = $request->category;
         $car->stars = $request->stars;
 
         if ($request->hasFile('image')) {
@@ -144,13 +149,7 @@ class CarController extends Controller
         // Delete inactive reservations
         $car->reservations()->where('status', '!=', 'Active')->delete();
         
-        // if ($car->image) {
-        //     // Get the filename from the image path
-        //     $filename = basename($car->image);
-
-        //     // Delete the image file from the storage
-        //     Storage::disk('local')->delete('images/cars/' . $filename);
-        // }
+        
         
         $car->delete();
 

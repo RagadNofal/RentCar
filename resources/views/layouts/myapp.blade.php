@@ -99,7 +99,7 @@ a:hover span::after {
                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
                                 @if(Auth::user()->role === 'admin')
                                     <li>
-                                        <a href="{{ route('adminDashboard') }}"
+                                        <a href="{{ route('admin.dashboard') }}"
                                             class="block px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                             Dashboard
                                         </a>
@@ -136,9 +136,10 @@ a:hover span::after {
 
     if (auth()->check() && auth()->user()->role === 'admin') {
         $navItems = [
-            ['text' => 'Dashboard', 'route' => 'adminDashboard'],
-            ['text' => 'Cars', 'route' => 'cars.index'],
-            ['text' => 'Users', 'route' => 'users'],
+            ['text' => 'Dashboard', 'route' => 'admin.dashboard'],
+            ['text' => 'Cars', 'route' => 'admin.cars.index'],
+            ['text' => 'Users', 'route' => 'admin.users.index'],
+            ['text' => 'Reservations', 'route' => 'admin.reservations.index'],
         ];
     } else {
         $navItems = [
@@ -277,7 +278,7 @@ a:hover span::after {
 @endif
 
 @include('flatpickr::components.script')
-
+@stack('scripts')
 <script>
     function scrollToTop() {
         window.scrollTo({ top: 0, behavior: "smooth" });

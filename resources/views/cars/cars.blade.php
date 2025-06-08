@@ -29,8 +29,25 @@
                 <div class="card h-100 shadow-sm">
                     <a href="{{ route('car.reservation', ['car' => $car->id]) }}">
                         <div class="position-relative">
-                            <img src="{{ $car->image }}" class="card-img-top img-fluid" alt="Car image" style="height: 200px; object-fit: cover;">
-                            <span class="badge bg-primary position-absolute top-0 start-0 m-2">{{ $car->reduce }}% OFF</span>
+                           <img src="{{ $car->image }}" class="card-img-top object-fit-cover" alt="Car Image" style="height: 240px; object-fit: cover;">
+    
+    <!-- Left badge: Discount -->
+    <span class="position-absolute top-0 start-0 m-2 badge bg-primary">
+        {{ $car->reduce }}% OFF
+    </span>
+
+    <!-- Right badge: Availability -->
+   
+        @if ($car->status =='Available')
+            <span class="position-absolute top-0 end-0 m-2 badge bg-success">
+                Available
+            </span>
+        @else
+            <span class="position-absolute top-0 end-0 m-2 badge bg-danger">
+                Not Available
+            </span>
+        @endif
+</a>
                         </div>
                     </a>
                     <div class="card-body">

@@ -5,15 +5,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\clientCarController;
-use App\Http\Controllers\adminDashboardController;
-use App\Http\Controllers\usersController;
-use App\Http\Controllers\addNewAdminController;
 use App\Http\Controllers\invoiceController;
 use App\Http\Controllers\AdminAuth\LoginController;
 use App\Http\Controllers\carSearchController;
 use App\Http\Controllers\PaymentController;
-use App\Models\User;
+use App\Http\Controllers\DashboardController;
 use App\Models\Car;
+use Illuminate\Support\Facades\Log;
 
 // ------------------- Guest Routes --------------------------------------- //
 Route::get('/', function () {
@@ -30,33 +28,37 @@ Route::get('contact_us', fn() => view('contact_us'))->name('contact_us');
 Route::get('/privacy_policy', fn() => view('Privacy_Policy'))->name('privacy_policy');
 Route::get('/terms_conditions', fn() => view('Terms_Conditions'))->name('terms_conditions');
 
+
+  
 // ------------------- Admin Auth Routes ---------------------------------- //
 Route::get('admin/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('admin/login', [LoginController::class, 'login'])->name('admin.login.submit');
 Route::redirect('/admin', 'admin/login');
 
 // ------------------- Admin Routes --------------------------------------- //
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/dashboard', adminDashboardController::class)->name('adminDashboard');
-    Route::resource('cars', CarController::class);
+// Admin routes
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/chart/reservations', [App\Http\Controllers\Admin\DashboardController::class, 'reservationStatusByWeek'])
+     ->name('dashboard.chart.reservations');
+    Route::get('/dashboard/funnel', [App\Http\Controllers\Admin\DashboardController::class, 'reservationFunnel'])->name('dashboard.funnel');
+    Route::get('/dashboard/timeline', [ReservationController::class, 'reservationTimeline'])->name('reservations.timeline');
 
-    // User Management
-    Route::get('/users', function () {
-        $admins = User::where('role', 'admin')->get();
-        $clients = User::where('role', 'client')->paginate(5);
-        return view('admin.users', compact('admins', 'clients'));
-    })->name('users');
-    Route::get('/userDetails/{user}', [usersController::class, 'show'])->name('userDetails');
 
-    // Admin Management
-    Route::get('/addAdmin', [usersController::class, 'create'])->name('addAdmin');
-    Route::post('/addAdmin', [addNewAdminController::class, 'register'])->name('addNewAdmin');
 
-    // Reservation & Payment Management
-    Route::get('/updateReservation/{reservation}', [ReservationController::class, 'editStatus'])->name('editStatus');
-    Route::put('/updateReservation/{reservation}', [ReservationController::class, 'updateStatus'])->name('updateStatus');
-    Route::get('/updatePayment/{reservation}', [ReservationController::class, 'editPayment'])->name('editPayment');
-    Route::put('/updatePayment/{reservation}', [ReservationController::class, 'updatePayment'])->name('updatePayment');
+    // Car management routes
+    //Route::delete('cars/{car}', [CarController::class, 'destroy'])->name('destroy');
+    Route::resource('cars', App\Http\Controllers\Admin\CarController::class);
+    Route::get('cars/{car}/rental-history', [App\Http\Controllers\Admin\CarController::class, 'rentalHistory'])->name('cars.rental-history');
+    
+
+
+    // Reservation management routes
+    Route::resource('reservations', App\Http\Controllers\Admin\ReservationController::class);
+
+    // User management routes
+   Route::resource('users', App\Http\Controllers\Admin\UserController::class);
+
 });
 
 // ------------------- Client Routes -------------------------------------- //
@@ -77,5 +79,6 @@ Route::middleware(['auth', 'restrictAdminAccess'])->group(function () {
 });
 // // ------------------- Shared (Auth) Routes ------------------------------- //
 // Route::patch('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
+
 
 Auth::routes();
