@@ -33,7 +33,7 @@ public function index(Request $request)
     }
 
     $clients = User::where('role', 'client')
-        ->withCount('reservations') // counts reservations
+        ->withCount('reservations') 
         ->paginate(10);
 
     $admins = User::where('role', 'admin')->paginate(10);
@@ -104,7 +104,10 @@ if ($request->hasFile('avatar_choose') && $request->file('avatar_choose')->isVal
 $completedReservations = $reservations->where('status', Reservation::STATUS_COMPLETED)->count();
 $cancelledReservations = $reservations->where('status', Reservation::STATUS_CANCELED)->count();
 $pendingReservations = $reservations->where('status', Reservation::STATUS_PENDING)->count();
-$totalSpent = $reservations->where('status', '!=', Reservation::STATUS_CANCELED)->sum('total_price');
+$totalSpent = \App\Models\Payment::whereHas('reservation', function ($query) use ($user) {
+    $query->where('user_id', $user->id);
+})->sum('amount');
+
 
 
         return view('admin.users.show', compact(

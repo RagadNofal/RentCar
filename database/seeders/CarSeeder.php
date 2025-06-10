@@ -21,7 +21,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Toyota_Camry.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 30,
+               
                 'stars' => 5,
                 'category' => 'Sedan',
             ],
@@ -33,7 +33,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Honda_Civic.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 10,
+                
                 'stars' => 5,
                 'category' => 'Sedan',
             ],
@@ -45,7 +45,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Ford_Mustang.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 0,
+               
                 'stars' => 5,
                 'category' => 'Sports',
             ],
@@ -57,7 +57,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/BMW_X5.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 20,
+                
                 'stars' => 5,
                 'category' => 'SUV',
             ],
@@ -69,7 +69,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Mercedes-Benz_E-Class.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 10,
+                
                 'stars' => 5,
                 'category' => 'Luxury',
             ],
@@ -81,7 +81,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Chevrolet_Malibu.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 50,
+                
                 'stars' => 5,
                 'category' => 'Sedan',
             ],
@@ -93,7 +93,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Audi_A4.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 40,
+               
                 'stars' => 5,
                 'category' => 'Luxury',
             ],
@@ -105,7 +105,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Nissan_Altima.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 60,
+                
                 'stars' => 5,
                 'category' => 'Sedan',
             ],
@@ -117,7 +117,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Hyundai_Sonata.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 30,
+                
                 'stars' => 5,
                 'category' => 'Sedan',
             ],
@@ -129,7 +129,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Kia_Optima.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 20,
+               
                 'stars' => 5,
                 'category' => 'Sedan',
             ],
@@ -141,7 +141,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Volkswagen_Golf.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 40,
+             
                 'stars' => 5,
                 'category' => 'Hatchback',
             ],
@@ -153,7 +153,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Subaru_Impreza.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 20,
+                
                 'stars' => 5,
                 'category' => 'Sedan',
             ],
@@ -165,7 +165,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Ford_Focus.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 30,
+                
                 'stars' => 5,
                 'category' => 'Hatchback',
             ],
@@ -177,7 +177,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Tesla_Model_3.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 20,
+                
                 'stars' => 5,
                 'category' => 'Electric',
             ],
@@ -189,7 +189,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Chevrolet_Camaro.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 20,
+                
                 'stars' => 5,
                 'category' => 'Sports',
             ],
@@ -201,7 +201,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Jaguar_F-Type.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 35,
+              
                 'stars' => 5,
                 'category' => 'Luxury',
             ],
@@ -213,7 +213,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Lexus_RX_350.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 40,
+             
                 'stars' => 5,
                 'category' => 'SUV',
             ],
@@ -225,7 +225,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Volvo_XC60.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 20,
+              
                 'stars' => 5,
                 'category' => 'SUV',
             ],
@@ -237,7 +237,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Porsche_911_Carrera.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 40,
+              
                 'stars' => 5,
                 'category' => 'Sports',
             ],
@@ -249,7 +249,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Mitsubishi_Outlander.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 30,
+                
                 'stars' => 5,
                 'category' => 'SUV',
             ],
@@ -261,7 +261,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Land_Rover_Range_Rover_Sport.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 20,
+              
                 'stars' => 5,
                 'category' => 'Luxury',
             ],
@@ -273,7 +273,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/GMC_Sierra_1500.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 35,
+                
                 'stars' => 4,
                 'category' => 'Pickup',
             ],
@@ -285,7 +285,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Fiat_500.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 40,
+              
                 'stars' => 5,
                 'category' => 'Hatchback',
             ],
@@ -297,7 +297,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Mini_Cooper.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 30,
+                
                 'stars' => 5,
                 'category' => 'Hatchback',
             ],
@@ -309,7 +309,7 @@ class CarSeeder extends Seeder
                 'image' => '/images/cars/Audi_Q5.jpg',
                 'quantity' => 1,
                 'status' => 'Available',
-                'reduce' => 40,
+               
                 'stars' => 5,
                 'category' => 'SUV',
             ],

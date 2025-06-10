@@ -12,49 +12,50 @@ use Illuminate\Support\Facades\DB;
 
 class ReservationController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = Reservation::with(['user', 'car']);
+ public function index(Request $request) 
+{
+    $query = Reservation::with(['user', 'car', 'payment']); 
 
-        if ($request->has('status') && $request->status != 'all') {
-            $query->where('status', ucfirst($request->status)); // Ensure capitalization matches DB enum
-        }
-
-        if ($request->has('user_id')) {
-            $query->where('user_id', $request->user_id);
-        }
-
-        if ($request->has('car_id')) {
-            $query->where('car_id', $request->car_id);
-        }
-
-        if ($request->has('search') && !empty($request->search)) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('id', 'like', "%{$search}%")
-                    ->orWhereHas('user', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%")
-                          ->orWhere('email', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('car', function ($q) use ($search) {
-                        $q->where('model', 'like', "%{$search}%")
-                          ->orWhere('brand', 'like', "%{$search}%");
-                    });
-            });
-        }
-
-        $reservations = $query->orderBy('created_at', 'desc')->paginate(10);
-
-        $users = User::where('role', '!=', 'admin')->orderBy('name')->get();
-        $cars = Car::orderBy('model')->get();
-        $statuses = ['all', 'Pending', 'Active', 'Completed', 'Canceled'];
-
-        return view('admin.reservations.index', compact('reservations', 'users', 'cars', 'statuses'));
+    if ($request->has('status') && $request->status != 'all') {
+        $query->where('status', ucfirst($request->status));
     }
+
+    if ($request->has('user_id')) {
+        $query->where('user_id', $request->user_id);
+    }
+
+    if ($request->has('car_id')) {
+        $query->where('car_id', $request->car_id);
+    }
+
+    if ($request->has('search') && !empty($request->search)) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('id', 'like', "%{$search}%")
+              ->orWhereHas('user', function ($q) use ($search) {
+                  $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+              })
+              ->orWhereHas('car', function ($q) use ($search) {
+                  $q->where('model', 'like', "%{$search}%")
+                    ->orWhere('brand', 'like', "%{$search}%");
+              });
+        });
+    }
+
+    $reservations = $query->orderBy('created_at', 'desc')->paginate(10);
+
+    $users = User::where('role', '!=', 'admin')->orderBy('name')->get();
+    $cars = Car::orderBy('model')->get();
+    $statuses = ['all', 'Pending', 'Active', 'Completed', 'Canceled'];
+
+    return view('admin.reservations.index', compact('reservations', 'users', 'cars', 'statuses'));
+}
+
 
     public function show(Reservation $reservation)
     {
-        $reservation->load(['user', 'car']);
+        $reservation->load(['user', 'car','payment']);
         return view('admin.reservations.show', compact('reservation'));
     }
 

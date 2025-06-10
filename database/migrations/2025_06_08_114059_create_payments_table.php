@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('reservation_id')->constrained()->onDelete('cascade');
             $table->enum('payment_status', ['Pending', 'Paid', 'Canceled'])->default('Pending');
+            $table->foreignId('discount_id')->nullable()->constrained()->nullOnDelete();
+            $table->decimal('amount', 8, 2)->nullable();
             $table->timestamps();
         });
     }

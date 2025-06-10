@@ -62,7 +62,7 @@ a:hover span::after {
         <div class="flex flex-wrap items-center justify-between mx-auto max-w-screen-xl">
             
             {{-- LOGO --}}
-            <a href="{{ route('home') }}" class="flex items-center space-x-2">
+            <a href="{{ route('home.cars') }}" class="flex items-center space-x-2">
                 <img src="/images/logos/LOGO.png" class="h-12" alt="Logo" loading="lazy">
             </a>
 
@@ -82,39 +82,62 @@ a:hover span::after {
                         </button>
                     </a>
                 @else
-                    {{-- AUTH DROPDOWN --}}
-                    <div class="relative">
-                        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
-                            class="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg">
-                            <img src="/images/user.png" alt="user" class="w-6 h-6">
-                            {{ Auth::user()->role === 'admin' ? 'Admin (' . Auth::user()->name . ')' : Auth::user()->name }}
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
+                   {{-- AUTH DROPDOWN + NOTIFICATIONS --}}
+@php
+    $unreadCount = Auth::user()->unreadNotifications->count();
+@endphp
 
-                        <div id="dropdown"
-                            class="z-20 hidden absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-gray-700">
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
-                                @if(Auth::user()->role === 'admin')
-                                    <li>
-                                        <a href="{{ route('admin.dashboard') }}"
-                                            class="block px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                            Dashboard
-                                        </a>
-                                    </li>
-                                @endif
-                                <li>
-                                    <a href="{{ route('logout') }}" class="block px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-600"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        Logout
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">@csrf</form>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+<div class="relative flex items-center gap-4">
+    {{-- Notification Bell --}}
+    <div class="relative">
+        <a href="{{ route('notifications.index') }}" class="relative inline-block">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500 hover:text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-5-5.917V4a1 1 0 10-2 0v1.083A6.002 6.002 0 006 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+            @if($unreadCount > 0)
+                <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
+                    {{ $unreadCount }}
+                </span>
+            @endif
+        </a>
+    </div>
+
+    {{-- User Dropdown --}}
+    <div class="relative">
+        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+            class="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg">
+            <img src="/images/user.png" alt="user" class="w-6 h-6">
+            {{ Auth::user()->role === 'admin' ? 'Admin (' . Auth::user()->name . ')' : Auth::user()->name }}
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 9l-7 7-7-7" />
+            </svg>
+        </button>
+
+        <div id="dropdown"
+            class="z-20 hidden absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-gray-700">
+            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                @if(Auth::user()->role === 'admin')
+                    <li>
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="block px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                            Dashboard
+                        </a>
+                    </li>
+                @endif
+                <li>
+                    <a href="{{ route('logout') }}" class="block px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-600"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">@csrf</form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
                 @endguest
 
                 {{-- Mobile Menu Toggle --}}
@@ -140,6 +163,7 @@ a:hover span::after {
             ['text' => 'Cars', 'route' => 'admin.cars.index'],
             ['text' => 'Users', 'route' => 'admin.users.index'],
             ['text' => 'Reservations', 'route' => 'admin.reservations.index'],
+             ['text' => 'Discounts', 'route' => 'admin.discounts.index'],
         ];
     } else {
         $navItems = [

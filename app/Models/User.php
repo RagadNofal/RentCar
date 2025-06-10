@@ -9,7 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
-{
+{/**
+ * @property \Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property \Illuminate\Notifications\DatabaseNotification[] $unreadNotifications
+ */
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**

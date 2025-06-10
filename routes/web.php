@@ -9,17 +9,14 @@ use App\Http\Controllers\invoiceController;
 use App\Http\Controllers\AdminAuth\LoginController;
 use App\Http\Controllers\carSearchController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 use App\Models\Car;
-use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Admin\DiscountController;
+
 
 // ------------------- Guest Routes --------------------------------------- //
-Route::get('/', function () {
-    $cars = Car::take(6)->where('status', '=', 'available')->get();
-    return view('home', compact('cars'));
-})->name('home');
-
-Route::get('/cars', [clientCarController::class, 'index'])->name('cars');
+Route::get('/', [CarController::class, 'homecars'])->name('home.cars');
+Route::get('/cars', [CarController::class, 'index'])->name('cars');
 Route::get('/cars/search', [carSearchController::class, 'search'])->name('carSearch');
 
 Route::get('location', fn() => view('location'))->name('location');
@@ -43,8 +40,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
      ->name('dashboard.chart.reservations');
     Route::get('/dashboard/funnel', [App\Http\Controllers\Admin\DashboardController::class, 'reservationFunnel'])->name('dashboard.funnel');
     Route::get('/dashboard/timeline', [ReservationController::class, 'reservationTimeline'])->name('reservations.timeline');
-
-
+   
 
     // Car management routes
     //Route::delete('cars/{car}', [CarController::class, 'destroy'])->name('destroy');
@@ -58,6 +54,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // User management routes
    Route::resource('users', App\Http\Controllers\Admin\UserController::class);
+    
+    Route::resource('discounts', DiscountController::class);
+   Route::patch('/discounts/{discount}/toggle', [DiscountController::class, 'toggle'])->name('discounts.toggle');
 
 });
 
@@ -69,6 +68,8 @@ Route::middleware(['auth', 'restrictAdminAccess'])->group(function () {
     
     Route::get('/payment/{reservation}', [PaymentController::class, 'create'])->name('payment.create');
     Route::post('/payment/{reservation}', [PaymentController::class, 'store'])->name('payment.store');
+    Route::get('/discount/check/{reservation}', [PaymentController::class, 'check']);
+
     Route::get('/thank-you/{reservation}', [PaymentController::class, 'thankYou'])->name('payment.thankyou');
 
     Route::get('/reservations', [ReservationController::class, 'myReservations'])->name('clientReservation');
@@ -76,6 +77,12 @@ Route::middleware(['auth', 'restrictAdminAccess'])->group(function () {
     Route::post('/client/reservations/{reservation}/payment', [ReservationController::class, 'processPayment'])
     ->name('client.reservations.processPayment');
     Route::patch('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
+
+     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+   Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 });
 // // ------------------- Shared (Auth) Routes ------------------------------- //
 // Route::patch('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');

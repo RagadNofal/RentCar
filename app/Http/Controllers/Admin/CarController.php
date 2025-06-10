@@ -3,16 +3,36 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Car;
+use App\Models\User;
+use App\Notifications\NewCarNotification;
 use Illuminate\Http\Request;
+use luminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 class CarController extends Controller
 {
-    public function index()
-    {
-        $cars = Car::latest()->paginate(8);
-        return view('admin.cars.index', compact('cars'));
+public function index()
+{
+    $cars = Car::latest()->paginate(8);
+
+    foreach ($cars as $car) {
+        $discount = $car->getApplicableDiscount(now());
+        $car->original_price = $car->price_per_day;
+
+        if ($discount) {
+            $car->reduce = $discount->amount;
+            $car->discount = $discount;
+            $car->final_price = $car->price_per_day - ($car->price_per_day * $discount->amount / 100);
+        } else {
+            $car->reduce = 0;
+            $car->discount = null;
+            $car->final_price = $car->price_per_day;
+        }
     }
+
+    return view('admin.cars.index', compact('cars'));
+}
+
 
     public function create()
     {
@@ -30,7 +50,7 @@ class CarController extends Controller
             'quantity' => 'required|integer|min:1',
             'category' => 'nullable|string|max:255',
             'status' => 'required|in:Available,Unavailable',
-            'reduce' => 'required|integer|min:0',
+            
             'stars' => 'required|integer|min:0|max:5',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -42,15 +62,36 @@ class CarController extends Controller
             $validatedData['image'] = '/' . $path;
         }
 
-        Car::create($validatedData);
+        $car = Car::create($validatedData);
+        
+
+        $users = User::where('role', 'client')->get();
+
+        foreach ($users as $user) {
+            $user->notify(new NewCarNotification($car));
+        }
+
+//Log::info('Notifications sent to users');
 
         return redirect()->route('admin.cars.index')->with('success', 'Car added successfully');
     }
 
-    public function show(Car $car)
-    {
-        return view('admin.cars.show', compact('car'));
+public function show(Car $car)
+{
+    $discount = $car->getApplicableDiscount(now());
+
+    $car->original_price = $car->price_per_day;
+
+    if ($discount) {
+        $car->reduce = $discount->amount;
+        $car->final_price = $car->price_per_day - ($car->price_per_day * $discount->amount / 100);
+    } else {
+        $car->reduce = 0;
+        $car->final_price = $car->price_per_day;
     }
+
+    return view('admin.cars.show', compact('car', 'discount'));
+}
 
     public function edit(Car $car)
     {
@@ -67,7 +108,7 @@ class CarController extends Controller
             'quantity' => 'required|integer|min:1',
             'category' => 'nullable|string|max:255',
             'status' => 'required|in:Available,Unavailable',
-            'reduce' => 'required|integer|min:0',
+            
             'stars' => 'required|integer|min:0|max:5',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -112,10 +153,15 @@ class CarController extends Controller
 
         return back()->with('success', 'Car status updated successfully');
     }
-    public function rentalHistory(Car $car)
+public function rentalHistory(Car $car) 
 {
-    $rentals = $car->reservations()->with('user')->latest()->get();
+    $rentals = $car->reservations()->with(['user', 'payment'])->latest()->get();
     return view('admin.cars.rental-history', compact('car', 'rentals'));
 }
+
+
+
+
+
 
 }

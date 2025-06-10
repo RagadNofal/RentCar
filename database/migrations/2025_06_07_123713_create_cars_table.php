@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('quantity');
             $table->string('category')->nullable();
             $table->enum('status', ['Available','Unavailable'])->default('Available');
-            $table->integer('reduce');
+           // $table->foreignId('discount_id')->nullable()->constrained('discounts')->onDelete('set null');
             $table->integer('stars');
 
             $table->timestamps();

@@ -77,16 +77,26 @@
                 </div>
                 <div class="flex-grow-1">
                     <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <div>
-                            <h1 class="mb-0">{{ $user->name }}</h1>
-                            <p class="text-muted mb-2">{{ $user->email }}</p>
-                            <div class="d-flex align-items-center">
-                                <span class="badge {{ $user->is_admin ? 'bg-primary' : 'bg-success' }} me-2">
+                       <div class="mb-4">
+                            <h1 class="h3 fw-bold mb-1">{{ $user->name }}</h1>
+
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-envelope me-1"></i> {{ $user->email }}
+                            </p>
+
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <span class="badge {{ $user->is_admin ? 'bg-primary' : 'bg-success' }}">
+                                    <i class="fas {{ $user->is_admin ? 'fa-user-shield' : 'fa-user' }} me-1"></i>
                                     {{ $user->is_admin ? 'Admin' : 'Client' }}
                                 </span>
-                                <span class="text-muted">Member since {{ $user->created_at->format('M d, Y') }}</span>
+
+                                <span class="text-muted small">
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    Member since {{ $user->created_at->format('M d, Y') }}
+                                </span>
                             </div>
                         </div>
+
                         <div class="mt-3 mt-md-0">
                             <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-primary me-2">
                                 <i class="fas fa-pencil-alt me-2"></i>Edit User
@@ -104,88 +114,58 @@
         <div class="row">
             <!-- Left Column - User Details -->
             <div class="col-lg-4 mb-4">
-                <!-- User Info Card -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">User Information</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label class="text-muted d-block">Name</label>
-                            <div class="fw-bold">{{ $user->name }}</div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="text-muted d-block">Email</label>
-                            <div class="fw-bold">{{ $user->email }}</div>
-                        </div>
-                    
-                        <div class="mb-3">
-                            <label class="text-muted d-block">Role</label>
-                            <div class="fw-bold">{{ $user->is_admin ? 'Administrator' : 'Client' }}</div>
-                        </div>
-                        <div>
-                            <label class="text-muted d-block">Account Created</label>
-                            <div class="fw-bold">{{ $user->created_at->format('F d, Y') }}</div>
-                        </div>
-                    </div>
-                </div>
-<!-- Statistics Card -->
-<div class="card shadow-sm mb-4">
-    <div class="card-header bg-white">
-        <h5 class="mb-0">Customer Statistics</h5>
+               <!-- User Info Card -->
+<div class="card shadow-sm border-0 rounded-4 overflow-hidden mb-4">
+    <div class="card-header bg-gradient bg-light d-flex align-items-center justify-content-between">
+        <h5 class="mb-0 text-primary"><i class="fas fa-user-circle me-2"></i>User Information</h5>
+        
     </div>
-
-    {{-- Two cards per row --}}
-    <div class="card-body">
-        <div class="row g-3 row-cols-1 row-cols-sm-2"> 
-            <!-- Active Rentals -->
-            <div class="col">
-                <div class="stat-card card h-100 border-0 bg-light">
-                    <div class="card-body text-center">
-                        <div class="text-primary mb-2">
-                            <i class="fas fa-calendar-check fa-2x"></i>
-                        </div>
-                        <h3 class="mb-0">{{ $activeReservations }}</h3>
-                        <div class="text-muted">Active</div>
+    <div class="card-body bg-white">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="me-3 text-primary">
+                        <i class="fas fa-user fa-lg"></i>
+                    </div>
+                    <div>
+                        <small class="text-muted">Full Name</small>
+                        <div class="fw-semibold">{{ $user->name }}</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Completed Rentals -->
-            <div class="col">
-                <div class="stat-card card h-100 border-0 bg-light">
-                    <div class="card-body text-center">
-                        <div class="text-success mb-2">
-                            <i class="fas fa-check-circle fa-2x"></i>
-                        </div>
-                        <h3 class="mb-0">{{ $completedReservations }}</h3>
-                        <div class="text-muted">Completed</div>
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="me-3 text-primary">
+                        <i class="fas fa-envelope fa-lg"></i>
+                    </div>
+                    <div>
+                        <small class="text-muted">Email Address</small>
+                        <div class="fw-semibold">{{ $user->email }}</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Pending Rentals -->
-            <div class="col">
-                <div class="stat-card card h-100 border-0 bg-light">
-                    <div class="card-body text-center">
-                        <div class="text-warning mb-2">
-                            <i class="fas fa-hourglass-half fa-2x"></i>
-                        </div>
-                        <h3 class="mb-0">{{ $pendingReservations }}</h3>
-                        <div class="text-muted">Pending</div>
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="me-3 text-primary">
+                        <i class="fas fa-id-badge fa-lg"></i>
+                    </div>
+                    <div>
+                        <small class="text-muted">Role</small>
+                        <div class="fw-semibold">{{ $user->is_admin ? 'Administrator' : 'Client' }}</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Cancelled Rentals -->
-            <div class="col">
-                <div class="stat-card card h-100 border-0 bg-light">
-                    <div class="card-body text-center">
-                        <div class="text-danger mb-2">
-                            <i class="fas fa-times-circle fa-2x"></i>
-                        </div>
-                        <h3 class="mb-0">{{ $cancelledReservations }}</h3>
-                        <div class="text-muted">Cancelled</div>
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="me-3 text-primary">
+                        <i class="fas fa-calendar-alt fa-lg"></i>
+                    </div>
+                    <div>
+                        <small class="text-muted">Member Since</small>
+                        <div class="fw-semibold">{{ $user->created_at->format('F d, Y') }}</div>
                     </div>
                 </div>
             </div>
@@ -193,14 +173,86 @@
     </div>
 </div>
 
-<!-- Total Spent Card -->
-<div class="card shadow-sm">
-    <div class="card-body text-center bg-light">
-        <div class="text-info mb-2">
-            <i class="fas fa-dollar-sign fa-2x"></i>
+<!-- Statistics Card -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">Customer Statistics</h5>
+    </div>
+
+  {{-- Stats Grid --}}
+<div class="card-body">
+    <div class="row g-4 row-cols-1 row-cols-sm-2">
+        <!-- Active -->
+        <div class="col">
+            <div class="card h-100 border-0 rounded-4 shadow-sm" style="background-color: #e6f0ff;">
+                <div class="card-body text-center">
+                    <div class="text-primary mb-2">
+                        <i class="fas fa-calendar-check fa-2x"></i>
+                    </div>
+                    <h3 class="fw-bold mb-0">{{ $activeReservations }}</h3>
+                    <div class="text-muted">Active Reservations</div>
+                </div>
+            </div>
         </div>
-        <h3 class="mb-0">${{ number_format($totalSpent, 2) }}</h3>
-        <div class="text-muted">Total Money Spent</div>
+
+        <!-- Completed -->
+        <div class="col">
+            <div class="card h-100 border-0 rounded-4 shadow-sm" style="background-color: #e6ffee;">
+                <div class="card-body text-center">
+                    <div class="text-success mb-2">
+                        <i class="fas fa-check-circle fa-2x"></i>
+                    </div>
+                    <h3 class="fw-bold mb-0">{{ $completedReservations }}</h3>
+                    <div class="text-muted">Completed Rentals</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending -->
+        <div class="col">
+            <div class="card h-100 border-0 rounded-4 shadow-sm" style="background-color: #fff7e6;">
+                <div class="card-body text-center">
+                    <div class="text-warning mb-2">
+                        <i class="fas fa-hourglass-half fa-2x"></i>
+                    </div>
+                    <h3 class="fw-bold mb-0">{{ $pendingReservations }}</h3>
+                    <div class="text-muted">Pending Approvals</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cancelled -->
+        <div class="col">
+            <div class="card h-100 border-0 rounded-4 shadow-sm" style="background-color: #ffe6e6;">
+                <div class="card-body text-center">
+                    <div class="text-danger mb-2">
+                        <i class="fas fa-times-circle fa-2x"></i>
+                    </div>
+                    <h3 class="fw-bold mb-0">{{ $cancelledReservations }}</h3>
+                    <div class="text-muted">Cancelled Rentals</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- Total Spent Card - Upgraded -->
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="card-body text-center bg-light position-relative">
+        <!-- Optional: Top Gradient Bar -->
+        <div class="position-absolute top-0 start-0 w-100" style="height: 6px; background: linear-gradient(90deg, #0dcaf0, #6610f2);"></div>
+        
+        <!-- Icon in Circle -->
+        <div class="d-flex justify-content-center mb-3">
+            <div class="bg-info bg-opacity-25 rounded-circle p-3">
+                <i class="fas fa-dollar-sign text-info fa-2x"></i>
+            </div>
+        </div>
+
+        <h3 class="fw-bold mb-0 text-dark">${{ number_format($totalSpent, 2) }}</h3>
+        <div class="text-muted small">Total Money Spent</div>
     </div>
 </div>
 
@@ -288,10 +340,19 @@
                                                 <hr>
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div>
-                                                        <small class="text-muted">Total Price:</small>
-                                                        <strong
-                                                            class="ms-2">${{ number_format($reservation->total_price, 2) }}</strong>
-                                                    </div>
+                                                            <small class="text-muted">Total Price:</small>
+                                                            <strong class="ms-2">${{ number_format($reservation->total_price, 2) }}</strong>
+                                                            @if($reservation->payment)
+                                                                <br>
+                                                                <small class="text-muted">Paid Price:</small>
+                                                                <strong class="ms-2 text-success">${{ number_format($reservation->payment->amount, 2) }}</strong>
+                                                            @else
+                                                                <br>
+                                                                <small class="text-muted">Paid Price:</small>
+                                                                <strong class="ms-2 text-danger">Not Paid</strong>
+                                                            @endif
+                                                        </div>
+
                                                     <a href="{{ route('admin.reservations.show', $reservation->id) }}" class="btn btn-sm btn-outline-primary">
                                                         View Details
                                                     </a>

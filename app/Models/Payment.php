@@ -9,7 +9,9 @@ class Payment extends Model
     protected $fillable = [
         'reservation_id',
         'payment_method',
+         'discount_id',
         'payment_status',
+        'amount',
     ];
 
     // Enums

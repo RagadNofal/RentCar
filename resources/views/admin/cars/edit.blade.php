@@ -85,13 +85,7 @@
                             @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
-                        <!-- Reduce -->
-                        <div class="mb-3">
-                            <label for="reduce" class="form-label">Reduce <span class="text-danger">*</span></label>
-                            <input type="number" min="0" name="reduce" id="reduce" class="form-control @error('reduce') is-invalid @enderror"
-                                value="{{ old('reduce', $car->reduce) }}" required>
-                            @error('reduce') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                        </div>
+                       
 
                         <!-- Stars -->
                         <div class="mb-3">

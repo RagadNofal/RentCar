@@ -55,33 +55,37 @@
                                         days)</span>
                                 </p>
                                 <p><strong>Total Price:</strong> ${{ number_format($reservation->total_price, 2) }}</p>
-
+                                    <p><strong>Amount Paied:</strong>
+                                        @if($reservation->payment && $reservation->payment->amount)
+                                            ${{ number_format($reservation->payment->amount, 2) }}
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </p>
                                 @if ($reservation->notes)
                                     <p><strong>Notes:</strong> {{ $reservation->notes }}</p>
                                 @endif
                             </div>
                             <div class="col-md-6">
-    <h6 class="text-muted mb-4">Customer Information</h6>
+                                <h6 class="text-muted mb-4">Customer Information</h6>
 
-    <p class="mb-3"><strong>Name:</strong> {{ $reservation->user->name }}</p>
-    <p class="mb-3"><strong>Email:</strong> {{ $reservation->user->email }}</p>
+                                <p class="mb-3"><strong>Name:</strong> {{ $reservation->user->name }}</p>
+                                <p class="mb-3"><strong>Email:</strong> {{ $reservation->user->email }}</p>
 
-    @if ($reservation->user->phone)
-        <p class="mb-3"><strong>Phone:</strong> {{ $reservation->user->phone }}</p>
-    @endif
+                                
 
-    @if ($reservation->user->avatar)
-        <div class="mb-3">
-            <img src="{{ $reservation->user->avatar }}" alt="admin avatar"
-                 class="rounded-circle img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
-        </div>
-    @endif
+                                @if ($reservation->user->avatar)
+                                    <div class="mb-3">
+                                        <img src="{{ $reservation->user->avatar }}" alt="admin avatar"
+                                            class="rounded-circle img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
+                                    </div>
+                                @endif
 
-    <a href="{{ route('admin.users.show', $reservation->user->id) }}"
-       class="btn btn-sm btn-outline-primary">
-        <i class="fas fa-user me-1"></i> View User Profile
-    </a>
-</div>
+                                <a href="{{ route('admin.users.show', $reservation->user->id) }}"
+                                class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-user me-1"></i> View User Profile
+                                </a>
+                            </div>
 
                         </div>
 
@@ -158,7 +162,18 @@
                                     
                                     <tr class="table-active">
                                         <th>Total Amount</th>
-                                        <td><strong>${{ number_format($reservation->total_price, 2) }}</strong></td>
+                                        <td>${{ number_format($reservation->total_price, 2) }}</strong></td>
+                                        
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th>Paied Amount</th>
+                                        <td>
+                                        @if($reservation->payment && $reservation->payment->amount)
+                                           <strong> ${{ number_format($reservation->payment->amount, 2) }}</strong>
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
                                     </tr>
                                     <tr>
                                         <th>Payment Status</th>

@@ -40,62 +40,83 @@
             </div>
         </div>
 
-        {{-- Cars List --}}
-        <div class="container my-4">
-            <div class="row g-4 justify-content-center">
-                @foreach ($cars as $car)
-                    <div class="col-md-4">
-                        <div class="card border shadow-sm h-100">
-                            <div class="position-relative">
-                               <a href="{{ route('car.reservation', ['car' => $car->id]) }}">
-    <img src="{{ $car->image }}" class="card-img-top object-fit-cover" alt="Car Image" style="height: 240px; object-fit: cover;">
-    
-    <!-- Left badge: Discount -->
-    <span class="position-absolute top-0 start-0 m-2 badge bg-primary">
-        {{ $car->reduce }}% OFF
-    </span>
+{{-- Cars List --}}
+<div class="container my-4">
+    <div class="row g-4 justify-content-center">
+        @foreach ($cars as $car)
+            <div class="col-md-4">
+                <div class="card border shadow-sm h-100">
+                    <div class="position-relative">
+                      
+                        <a href="{{ route('car.reservation', ['car' => $car->id]) }}">
+                            <img src="{{ $car->image }}" class="card-img-top object-fit-cover" alt="Car Image" style="height: 240px; object-fit: cover;">
 
-    <!-- Right badge: Availability -->
-    <span class="position-absolute top-0 end-0 m-2 badge {{ $car->status === 'Available' ? 'bg-success' : 'bg-danger' }}">
-        {{ $car->status === 'Available' ? 'Available' : 'Not Available' }}
-    </span>
-</a>
+                            {{-- Discount Badge --}}
+                            @if ($car->reduce > 0)
+                                <span class="position-absolute top-0 start-0 m-2 badge bg-primary">
+                                    {{ $car->reduce }}% OFF
+                                </span>
+                            @endif
 
-                            </div>
-                            <div class="card-body d-flex flex-column justify-content-between">
+                            {{-- Availability Badge --}}
+                            <span class="position-absolute top-0 end-0 m-2 badge {{ $car->status === 'Available' ? 'bg-success' : 'bg-danger' }}">
+                                {{ $car->status === 'Available' ? 'Available' : 'Not Available' }}
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title fw-bold">{{ $car->brand }} {{ $car->model }} {{ $car->engine }}</h5>
+                            <p class="text-muted mb-2"><i class="bi bi-tags"></i> {{ $car->category }}</p>
+
+                            {{-- Pricing --}}
+                            <div class="d-flex justify-content-between align-items-center my-3">
                                 <div>
-                                    <h5 class="card-title fw-bold">{{ $car->brand }} {{ $car->model }} {{ $car->engine }}</h5>
-                                    <p class="text-muted mb-2"><i class="bi bi-tags"></i> {{ $car->category }}</p> <!-- Category Added -->
-
-                                    <div class="d-flex justify-content-between align-items-center my-3">
-                                        <div>
-                                            <span class="fs-4 fw-bold text-dark">${{ $car->price_per_day }}</span><br>
-                                            <small class="text-muted text-decoration-line-through">
-                                                ${{ intval(($car->price_per_day * 100) / (100 - $car->reduce)) }}
-                                            </small>
-                                        </div>
-                                        <div class="d-flex align-items-center">
-                                            @for ($i = 0; $i < $car->stars; $i++)
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd" class="bi bi-star-fill me-1" viewBox="0 0 16 16">
-                                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.32-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.63.282.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                                                </svg>
-                                            @endfor
-                                            <span class="badge bg-primary ms-2">{{ $car->stars }}.0</span>
-                                        </div>
-                                    </div>
+                                    @if ($car->reduce > 0)
+                                        <span class="fs-4 fw-bold text-success">
+                                            ${{ number_format($car->final_price, 2) }}
+                                        </span><br>
+                                        <small class="text-muted text-decoration-line-through">
+                                            ${{ number_format($car->original_price, 2) }}
+                                        </small>
+                                    @else
+                                        <span class="fs-4 fw-bold text-dark">
+                                            ${{ number_format($car->price_per_day, 2) }}
+                                        </span>
+                                    @endif
                                 </div>
-                                <a href="{{ route('car.reservation', ['car' => $car->id]) }}" class="btn btn-dark w-100 d-flex align-items-center justify-content-center gap-2 mt-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="width: 1.2em;">
-                                        <path style="fill: #0d6efd;" d="M184 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H96c-35.3 0-64 28.7-64 64v16 48V448c0 35.3 28.7 64 64 64H416c35.3 0 64-28.7 64-64V192 144 128c0-35.3-28.7-64-64-64H376V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H184V24zM80 192H432V448c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16V192zm176 40c-13.3 0-24 10.7-24 24v48H184c-13.3 0-24 10.7-24 24s10.7 24 24 24h48v48c0 13.3 10.7 24 24 24s24-10.7 24-24V352h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H280V256c0-13.3-10.7-24-24-24z"/>
-                                    </svg>
-                                    Reserve
-                                </a>
+
+                                {{-- Stars --}}
+                                <div class="d-flex align-items-center">
+                                    @for ($i = 0; $i < $car->stars; $i++)
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd" class="bi bi-star-fill me-1" viewBox="0 0 16 16">
+                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.32-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.63.282.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                        </svg>
+                                    @endfor
+                                    <span class="badge bg-primary ms-2">{{ $car->stars }}.0</span>
+                                </div>
                             </div>
                         </div>
+
+                        {{-- Reserve Button --}}
+                        <a href="{{ route('car.reservation', ['car' => $car->id]) }}" class="btn btn-dark w-100 d-flex align-items-center justify-content-center gap-2 mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="width: 1.2em;">
+                                <path style="fill: #0d6efd;" d="M184 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H96c-35.3 0-64 28.7-64 64v16 48V448c0 35.3 28.7 64 64 64H416c35.3 0 64-28.7 64-64V192 144 128c0-35.3-28.7-64-64-64H376V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H184V24zM80 192H432V448c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16V192zm176 40c-13.3 0-24 10.7-24 24v48H184c-13.3 0-24 10.7-24 24s10.7 24 24 24h48v48c0 13.3 10.7 24 24 24s24-10.7 24-24V352h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H280V256c0-13.3-10.7-24-24-24z"/>
+                            </svg>
+                            Reserve
+                        </a>
                     </div>
-                @endforeach
+                </div>
             </div>
-        </div>
+        @endforeach
+    </div>
+
+   
+</div>
+
+
+
 
         {{-- Our Numbers Section --}}
         <div class="container my-5">

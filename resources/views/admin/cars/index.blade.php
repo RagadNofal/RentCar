@@ -109,8 +109,7 @@
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
-                            <input type="text" id="searchInput" class="form-control border-start-0"
-                                placeholder="Search cars...">
+                            <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Search cars...">
                         </div>
                     </div>
 
@@ -119,7 +118,6 @@
                             <option value="">All Statuses</option>
                             <option value="Available">Available</option>
                             <option value="Rented">Unavailable</option>
-                            
                         </select>
                     </div>
 
@@ -174,13 +172,17 @@
                     data-status="{{ $car->status }}"
                     data-category="{{ strtolower($car->category) }}"
                     data-name="{{ strtolower($car->brand . ' ' . $car->model) }}"
-                    data-price="{{ $car->price_per_day }}"
+                    data-price="{{ $car->final_price }}"
                     data-date="{{ $car->created_at ? $car->created_at->timestamp : '' }}">
-                    <div class="card car-card shadow-sm h-100">
-                         <img src="{{ $car->image }}" class="card-img-top object-fit-cover" alt="Car Image" style="height: 240px; object-fit: cover;">
-                                    <span class="position-absolute top-0 start-0 m-2 badge bg-primary">
-                                        {{ $car->reduce }}% OFF
-                                    </span>
+                    
+                    <div class="card car-card shadow-sm h-100 position-relative">
+                        <img src="{{ $car->image }}" class="card-img-top object-fit-cover" alt="Car Image" style="height: 240px; object-fit: cover;">
+
+                        @if($car->reduce > 0)
+                            <span class="position-absolute top-0 start-0 m-2 badge bg-primary">
+                                {{ $car->reduce }}% OFF
+                            </span>
+                        @endif
 
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -189,11 +191,27 @@
                                     {{ $car->status }}
                                 </span>
                             </div>
+                            
                             <p class="card-text text-muted">{{ $car->category ?? 'Uncategorized' }}</p>
                             <div class="mt-2"><strong>Engine:</strong> {{ $car->engine }}</div>
                             <div class="mt-2"><strong>Stars:</strong> {{ $car->stars }} ⭐</div>
-                            <div class="mt-3"><h6 class="mb-0">${{ number_format($car->price_per_day, 2) }} / day</h6></div>
+
+                            <div class="mt-3">
+                                @if($car->reduce > 0)
+                                    <div>
+                                        <span class="text-muted text-decoration-line-through me-2">
+                                            ${{ number_format($car->original_price, 2) }}
+                                        </span>
+                                        <span class="fw-bold text-success">
+                                            ${{ number_format($car->final_price, 2) }} / day
+                                        </span>
+                                    </div>
+                                @else
+                                    <h6 class="mb-0">${{ number_format($car->price_per_day, 2) }} / day</h6>
+                                @endif
+                            </div>
                         </div>
+
                         <div class="card-footer bg-white border-top-0">
                             <div class="d-flex justify-content-between">
                                 <a href="{{ route('admin.cars.show', $car->id) }}" class="btn btn-sm btn-outline-primary">
@@ -202,38 +220,35 @@
                                 <a href="{{ route('admin.cars.edit', $car->id) }}" class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-pencil-alt me-1"></i>Edit
                                 </a>
-                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $car->id }}">
-                                <i class="fas fa-trash-alt me-1"></i> Delete
-                            </button>
-
-
-
-
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $car->id }}">
+                                    <i class="fas fa-trash-alt me-1"></i> Delete
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal-{{ $car->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $car->id }}" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel-{{ $car->id }}">Confirm Delete</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Are you sure you want to delete <strong>{{ $car->brand }} {{ $car->model }}</strong>?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-danger">Delete</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+                </div>
+
+                <!-- Delete Modal -->
+                <div class="modal fade" id="deleteModal-{{ $car->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $car->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel-{{ $car->id }}">Confirm Delete</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete <strong>{{ $car->brand }} {{ $car->model }}</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             @empty
                 <div class="col-12">
@@ -248,31 +263,9 @@
             {{ $cars->links() }}
         </div>
     </div>
-
-    <!-- Delete Car Modal -->
-   <div class="modal fade" id="deleteModal-{{ $car->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $car->id }}" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel-{{ $car->id }}">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                Are you sure you want to delete <strong>{{ $car->brand }} {{ $car->model }}</strong>?
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-danger">Delete</button>
-                </div>
-            </form>
-            </div>
-        </div>
-</div>
-
 @endsection
+
+
 
 @section('scripts')
     <script>

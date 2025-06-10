@@ -56,11 +56,11 @@
                                 <label for="category" class="form-label">Category</label>
                                 <select name="category" id="category" class="form-select @error('category') is-invalid @enderror">
                                     <option value="">Select Category</option>
-                                    <option value="sedan" {{ old('category') == 'sedan' ? 'selected' : '' }}>Sedan</option>
-                                    <option value="suv" {{ old('category') == 'suv' ? 'selected' : '' }}>SUV</option>
-                                    <option value="luxury" {{ old('category') == 'luxury' ? 'selected' : '' }}>Luxury</option>
-                                    <option value="sports" {{ old('category') == 'sports' ? 'selected' : '' }}>Sports</option>
-                                    <option value="electric" {{ old('category') == 'electric' ? 'selected' : '' }}>Electric</option>
+                                    <option value="Sedan" {{ old('category') == 'Sedan' ? 'selected' : '' }}>Sedan</option>
+                                    <option value="SUV" {{ old('category') == 'SUV' ? 'selected' : '' }}>SUV</option>
+                                    <option value="Luxury" {{ old('category') == 'Luxury' ? 'selected' : '' }}>Luxury</option>
+                                    <option value="Sports" {{ old('category') == 'Sports' ? 'selected' : '' }}>Sports</option>
+                                    <option value="Electric" {{ old('category') == 'Electric' ? 'selected' : '' }}>Electric</option>
                                 </select>
                                 @error('category') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
@@ -79,11 +79,7 @@
                                 <input type="number" name="price_per_day" id="price_per_day" class="form-control @error('price_per_day') is-invalid @enderror" value="{{ old('price_per_day') }}" step="0.01" required>
                                 @error('price_per_day') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
-                            <div class="col-md-6">
-                                <label for="reduce" class="form-label">Discount (%)</label>
-                                <input type="number" name="reduce" id="reduce" class="form-control @error('reduce') is-invalid @enderror" value="{{ old('reduce', 0) }}" min="0">
-                                @error('reduce') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
+                            
                             <div class="col-md-6">
                                 <label for="quantity" class="form-label">Quantity <span class="text-danger">*</span></label>
                                 <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" value="{{ old('quantity') }}" min="1" required>

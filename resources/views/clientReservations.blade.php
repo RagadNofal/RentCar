@@ -77,10 +77,26 @@
                                         <strong>To:</strong>
                                         <p class="text-primary">{{ \Carbon\Carbon::parse($reservation->end_date)->format('y-m-d') }}</p>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <strong>Price:</strong>
-                                        <p class="text-primary">{{ $reservation->total_price }} <span class="text-dark">$</span></p>
-                                    </div>
+                                 <div class="col-sm-4">
+    <strong>Price:</strong>
+    @if ($reservation->payment)
+        <p>
+            <span class="text-muted text-decoration-line-through me-2">
+                ${{ number_format($reservation->total_price, 2) }}
+            </span>
+            <span class="badge bg-success fs-6">
+                ${{ number_format($reservation->payment->amount, 2) }} Paid
+            </span>
+        </p>
+    @else
+        <p>
+            <span class="badge bg-warning text-dark">Unpaid</span>
+            <span class="ms-2">${{ number_format($reservation->total_price, 2) }}</span>
+        </p>
+    @endif
+</div>
+
+
                                 </div>
 
                                 <div class="row mt-3">
@@ -88,9 +104,18 @@
                                         <strong>Payment:</strong>
                                         <p>
                                             @if ($reservation->payment)
-                                                <span class="badge bg-{{ $reservation->payment->payment_status == 'Paid' ? 'success' : ($reservation->payment->payment_status == 'Canceled' ? 'danger' : 'info') }} text-white">
-                                                    {{ $reservation->payment->payment_status }}
-                                                </span>
+                                                @php
+                                                        $statusColor = match($reservation->payment->payment_status) {
+                                                            'Paid' => 'success',
+                                                            'Canceled' => 'danger',
+                                                            default => 'info',
+                                                        };
+                                                    @endphp
+
+                                                    <span class="badge bg-{{ $statusColor }} bg-opacity-25 text-{{ $statusColor }} border border-{{ $statusColor }}">
+                                                        {{ $reservation->payment->payment_status }}
+                                                    </span>
+
                                             @else
                                                 <span class="badge bg-secondary text-white">N/A</span>
                                             @endif
@@ -99,9 +124,11 @@
                                     <div class="col-md-6">
                                         <strong>Reservation:</strong>
                                         <p>
-                                            <span class="badge bg-{{ $status == 'Pending' ? 'info' : ($status == 'Active' ? 'success' : ($status == 'Completed' ? 'dark' : 'danger')) }} text-white">
-                                                {{ $status }}
-                                            </span>
+                                            <span class="badge bg-primary bg-opacity-25 text-primary border border-primary">
+    {{ $status }}
+</span>
+
+
                                         </p>
                                     </div>
                                 </div>
@@ -112,16 +139,18 @@
 
                                 @if (!in_array($reservation->status, ['Canceled']))
                                     <div class="mt-4 text-center">
-                                        <a href="{{ route('invoice', ['reservation' => $reservation->id]) }}" target="_blank" class="btn btn-primary w-100">
-                                            Get Reservation Invoice
+                                       <a href="{{ route('invoice', ['reservation' => $reservation->id]) }}" target="_blank" class="btn border border-primary bg-primary bg-opacity-10 text-primary w-100">
+                                            <i class="bi bi-receipt me-1"></i> Get Reservation Invoice
                                         </a>
+
                                     </div>
                                 @endif
 
                                 @if ($reservation->status === 'Pending' && now()->lt(\Carbon\Carbon::parse($reservation->start_date)))
-                                    <button class="btn btn-danger w-100 mt-2" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $reservation->id }}">
-                                        Cancel Reservation
+                                    <button class="btn border border-danger bg-danger bg-opacity-10 text-danger w-100 mt-2" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $reservation->id }}">
+                                        <i class="bi bi-x-circle me-1"></i> Cancel Reservation
                                     </button>
+
                                 @endif
                             </div>
                         </div>

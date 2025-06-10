@@ -1,4 +1,5 @@
 @extends('layouts.myapp')
+
 @section('content')
 <div class="container mt-5 p-4 bg-light rounded shadow">
     <form action="{{ route('carSearch') }}">
@@ -29,33 +30,46 @@
                 <div class="card h-100 shadow-sm">
                     <a href="{{ route('car.reservation', ['car' => $car->id]) }}">
                         <div class="position-relative">
-                           <img src="{{ $car->image }}" class="card-img-top object-fit-cover" alt="Car Image" style="height: 240px; object-fit: cover;">
-    
-    <!-- Left badge: Discount -->
-    <span class="position-absolute top-0 start-0 m-2 badge bg-primary">
-        {{ $car->reduce }}% OFF
-    </span>
+                            <img src="{{ $car->image }}" class="card-img-top object-fit-cover" alt="Car Image" style="height: 240px; object-fit: cover;">
 
-    <!-- Right badge: Availability -->
-   
-        @if ($car->status =='Available')
-            <span class="position-absolute top-0 end-0 m-2 badge bg-success">
-                Available
-            </span>
-        @else
-            <span class="position-absolute top-0 end-0 m-2 badge bg-danger">
-                Not Available
-            </span>
-        @endif
-</a>
+                            {{-- Discount Badge --}}
+                            @if($car->reduce > 0)
+                                <span class="position-absolute top-0 start-0 m-2 badge bg-primary">
+                                    {{ $car->reduce }}% OFF
+                                </span>
+                            @endif
+
+                            {{-- Availability Badge --}}
+                            <span class="position-absolute top-0 end-0 m-2 badge {{ $car->status == 'Available' ? 'bg-success' : 'bg-danger' }}">
+                                {{ $car->status == 'Available' ? 'Available' : 'Not Available' }}
+                            </span>
                         </div>
                     </a>
+
                     <div class="card-body">
                         <h5 class="card-title">{{ $car->brand }} {{ $car->model }} {{ $car->engine }}</h5>
+
+                        {{-- Car Category --}}
+                        @if ($car->category)
+                            
+                                <p class="text-muted mb-2"><i class="bi bi-tags"></i> {{ $car->category }}</p>
+                            
+                        @endif
+
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <span class="fs-5 fw-bold">${{ $car->price_per_day }}</span>
-                                <span class="text-muted text-decoration-line-through">${{ intval(($car->price_per_day * 100) / (100 - $car->reduce)) }}</span>
+                                @if($car->reduce > 0)
+                                    <span class="fs-5 fw-bold text-success">
+                                        ${{ number_format($car->final_price, 2) }}
+                                    </span><br>
+                                    <small class="text-muted text-decoration-line-through">
+                                        ${{ number_format($car->original_price, 2) }}
+                                    </small>
+                                @else
+                                    <span class="fs-5 fw-bold">
+                                        ${{ number_format($car->price_per_day, 2) }}
+                                    </span>
+                                @endif
                             </div>
                             <div>
                                 @for ($i = 0; $i < $car->stars; $i++)
@@ -65,6 +79,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="card-footer bg-transparent border-top-0">
                         <a href="{{ route('car.reservation', ['car' => $car->id]) }}" class="btn btn-dark w-100 d-flex align-items-center justify-content-center">
                             <i class="bi bi-calendar2-check-fill me-2"></i> Reserve

@@ -7,20 +7,33 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Notifications\ReservationMadeNotification;
+use App\Models\User;
 
 class ReservationController extends Controller
 {
-    public function index()
-    {
-        $reservations = Reservation::with('car', 'user')->latest()->get();
-        return view('admin.reservations.index', compact('reservations'));
-    }
+   
 
-   public function create($car_id)
+  public function create($car_id)
 {
     $car = Car::findOrFail($car_id);
     $user = Auth::user();
 
+    // Add discount info like in index()
+    $discount = $car->getApplicableDiscount(now());
+    $car->original_price = $car->price_per_day;
+
+    if ($discount) {
+        $car->reduce = $discount->amount;
+        $car->discount = $discount;
+        $car->final_price = $car->price_per_day - ($car->price_per_day * $discount->amount / 100);
+    } else {
+        $car->reduce = 0;
+        $car->discount = null;
+        $car->final_price = $car->price_per_day;
+    }
+
+    // Reserved date ranges
     $reservedRanges = $car->reservations()
         ->where('status', '!=', 'cancelled')
         ->get()
@@ -33,6 +46,7 @@ class ReservationController extends Controller
 
     return view('reservation.create', compact('car', 'user', 'reservedRanges'));
 }
+
 
     public function store(Request $request, $car_id)
 {
@@ -106,7 +120,7 @@ if ($car->quantity == 1) {
         ]);
 
         DB::commit();
-
+$user->notify(new ReservationMadeNotification($reservation));
         return redirect()->route('payment.create', ['reservation' => $reservation->id]);
 
     } catch (\Exception $e) {

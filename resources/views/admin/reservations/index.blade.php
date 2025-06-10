@@ -5,7 +5,10 @@
 @section('content')
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Manage Reservations</h1>
+          <h1 class="fw-bold text-primary mb-0">
+            <i class="fas fa-calendar-alt me-2 text-secondary"></i> Manage Reservations
+          </h1>       
+
             <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
             </a>
@@ -85,9 +88,9 @@
                             <tr>
                                 <th>ID</th>
                                 <th>User</th>
-                                <th>Car</th>
                                 <th>Dates</th>
                                 <th>Price</th>
+                                <th>Paid Amount</th>
                                 <th>Status</th>
                                 <th>Created</th>
                                 <th>Actions</th>
@@ -96,14 +99,26 @@
                         <tbody>
                             @forelse($reservations as $reservation)
                                 <tr>
-                                    <td>{{ $reservation->id }}</td>
+                                    <td><div class="d-flex align-items-center">
+                                            @if($reservation->car->image)
+                                                <img src="{{ $reservation->car->image }}" 
+                                                    alt="{{ $reservation->car->name }}"
+                                                    class="img-thumbnail me-2" style="width: 60px; height: 40px; object-fit: cover;">
+                                            @else
+                                                <div class="bg-secondary me-2 d-flex align-items-center justify-content-center rounded" 
+                                                    style="width: 60px; height: 40px;">
+                                                    <i class="fas fa-car text-white"></i>
+                                                </div>
+                                            @endif
+
+                                            <div>
+                                                <div>{{ $reservation->car->brand }} - {{ $reservation->car->model }}</div>
+                                                <small class="text-muted">${{ number_format($reservation->car->price_per_day, 2) }} / day</small>
+                                            </div>
+                                        </div></td>
                                     <td>
                                         {{ $reservation->user->name }}
                                         <small class="d-block text-muted">{{ $reservation->user->email }}</small>
-                                    </td>
-                                    <td>
-                                        {{ $reservation->car->brand }}- {{ $reservation->car->model }}
-                                        <small class="d-block text-muted">{{ $reservation->car->price_per_day }}</small>
                                     </td>
                                     <td>
                                         {{ $reservation->start_date->format('M d, Y') }} -
@@ -113,6 +128,14 @@
                                         </small>
                                     </td>
                                     <td>${{ number_format($reservation->total_price, 2) }}</td>
+                                    <td>
+                                        @if($reservation->payment && $reservation->payment->amount)
+                                            ${{ number_format($reservation->payment->amount, 2) }}
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
+
                                     <td>
                                         @if ($reservation->status == 'Active')
                                             <span class="badge bg-success">Active</span>
